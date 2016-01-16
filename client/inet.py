@@ -17,7 +17,10 @@ class CommHandler():
         self.client = socket.socket()
 
     #Sends message to the given socket as the given username.
-    def sendMessage(self, username, message):
+    def sendMessage(self, args):
+        username = args[0]
+        message = args[1]
+
         self.client.connect(('localhost', 5555))
 
         length = len(message)

@@ -14,12 +14,11 @@ ch = CommHandler()
 ui = UI(username)
 
 print('Setup complete. Anything you type will be directly transmitted to the remote client')
-print("\r[%s]:" % username,end="")
+print("\r[%s]: " % username,end="")
+
 while True:
     if(ch.checkForMessage()):
-        username, message = ch.recvMessage()
-        ui.printMessage(username,message)
+        ui.printMessage(ch.recvMessage())
 
-    readInChars = ui.readInChars()
-    if(readInChars[0]):
-        ch.sendMessage(readInChars[1], readInChars[2])
+    if(ui.readInChars()):
+        ch.sendMessage(ui.getMessageToSend())

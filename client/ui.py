@@ -6,10 +6,11 @@ class UI():
     def __init__(self, username):
         self.username = username
         self.data = ''
+        self.retdata = ''
 
     def readInChars(self):
         if not (msvcrt.kbhit()):
-            return (False, self.username, self.data)
+            return False
 
         while msvcrt.kbhit():
             key = msvcrt.getch();
@@ -21,11 +22,11 @@ class UI():
 
             if(key == b'\r'):
                 if(self.data == ''):
-                    return(False, self.username, '')
+                    return False
                 print('\r\n', end="", flush=True)
-                ret = self.data
+                self.retdata = self.data
                 self.data = ''
-                return(True, self.username, ret)
+                return True
 
             elif(key == b'\x08'):
                 print('\b \b',end="",flush=True)
@@ -35,8 +36,13 @@ class UI():
 
             print('\r[%s]:' % self.username,self.data,end="",flush=True)
 
-        return (False, self.username, '')
+        return False
 
-    def printMessage(self, username, message):
+    def getMessageToSend(self):
+        return (self.username, self.retdata)
+
+    def printMessage(self, args):
+        username = args[0]
+        message = args[1]
         print('\r[%s]:' % username, message, end="\r\n", flush=True)
         print('\r[%s]:' % self.username, self.data, end="", flush=True)
