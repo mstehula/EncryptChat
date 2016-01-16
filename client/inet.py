@@ -7,13 +7,12 @@ class CommHandler():
     #Setup for the listener server socket and client socket. Also starts the
     #server, but does not start accepting. Currently listener is locked at port
     #5555
-    def __init__(self):
+    def __init__(self, localport, hostname, hostport):
         self.listener = socket.socket(socket.AF_INET, socket.SOCK_STREAM, 0)
-        host = 'localhost'
-        port = 5555
-        self.listener.bind((host, port))
+        self.listener.bind('localhost', localport)
         self.listener.listen(5)
 
+        self.remoteloc = (hostname, hostport)
         self.client = socket.socket()
 
     #Sends message to the given socket as the given username.
@@ -21,7 +20,7 @@ class CommHandler():
         username = args[0]
         message = args[1]
 
-        self.client.connect(('localhost', 5555))
+        self.client.connect(self.remoteloc)
 
         length = len(message)
 
